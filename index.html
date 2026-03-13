@@ -98,18 +98,17 @@ body { background:#000308; color:var(--text); font-family:'Exo 2',sans-serif; ov
 /* Tabs */
 .tabs {
   display:flex; border-bottom:1px solid var(--border);
-  padding:0 8px; flex-shrink:0; gap:0; overflow-x:auto;
-  scrollbar-width:none;
+  padding:0 4px; flex-shrink:0; overflow:hidden;
 }
-.tabs::-webkit-scrollbar { display:none; }
 .tab-btn {
   background:none; border:none; color:rgba(255,255,255,0.35);
-  font-family:'Exo 2',sans-serif; font-size:0.58rem; letter-spacing:1.5px;
-  text-transform:uppercase; padding:8px 8px 7px; cursor:pointer;
-  border-bottom:2px solid transparent; transition:all 0.2s; white-space:nowrap; flex-shrink:0;
+  font-family:'Exo 2',sans-serif; font-size:0.52rem; letter-spacing:0.5px;
+  text-transform:uppercase; padding:9px 0 8px; cursor:pointer;
+  border-bottom:2px solid transparent; transition:all 0.2s;
+  white-space:nowrap; flex:1; text-align:center; min-width:0;
 }
 .tab-btn:hover { color:rgba(255,255,255,0.7); }
-.tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
+.tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
 
 /* Tab content */
 .tab-content {
@@ -242,7 +241,7 @@ body { background:#000308; color:var(--text); font-family:'Exo 2',sans-serif; ov
     background:rgba(255,255,255,0.15); margin:0 auto 12px;
   }
 
-  .tab-btn { font-size:0.54rem; padding:7px 7px 6px; letter-spacing:1px; }
+  .tab-btn { font-size:0.5rem; padding:7px 0 6px; letter-spacing:0.3px; flex:1; text-align:center; }
   .tab-content { padding:10px 14px 14px; }
   .stat-label { font-size:0.55rem; }
   .stat-value { font-size:0.6rem; }
@@ -254,7 +253,7 @@ body { background:#000308; color:var(--text); font-family:'Exo 2',sans-serif; ov
 @media (max-width:360px) {
   .header h1 { font-size:0.62rem; }
   .info-panel { max-height:78vh; }
-  .tab-btn { font-size:0.5rem; padding:6px 5px; }
+  .tab-btn { font-size:0.46rem; padding:6px 0; letter-spacing:0px; }
 }
 
 </style>
@@ -280,7 +279,7 @@ body { background:#000308; color:var(--text); font-family:'Exo 2',sans-serif; ov
     <div class="planet-type" id="planetType"></div>
   </div>
   <div class="tabs">
-    <button class="tab-btn active" data-tab="overview">Overview</button>
+    <button class="tab-btn active" data-tab="overview">Info</button>
     <button class="tab-btn" data-tab="surface">Surface</button>
     <button class="tab-btn" data-tab="missions">Missions</button>
     <button class="tab-btn" data-tab="satellites">Satellites</button>
@@ -939,9 +938,9 @@ function renderSurface(d){
 }
 
 
-function renderMinerals(d){
+function renderMinerals(d, name){
   const el=document.getElementById('tab-minerals');
-  const data=MINERALS[d._name||''];
+  const data=MINERALS[name||d._name||''];
   if(!data||!data.length){el.innerHTML='<p class="no-data">No mineral data available.</p>';return;}
   el.innerHTML=data.map(cat=>`
     <div class="mineral-category">
@@ -1008,7 +1007,7 @@ function showInfo(name){
   document.getElementById('planetName').style.color=d.color;
   document.getElementById('planetType').textContent=d.type;
   drawPlanetIcon(d);
-  renderOverview(d); renderSurface(d); renderMissions(d); renderSatellites(d); renderMinerals(d);
+  renderOverview(d); renderSurface(d); renderMissions(d); renderSatellites(d); renderMinerals(d, name);
   switchTab('overview');
   const panel=document.getElementById('infoPanel');
   document.querySelector('.tab-content').scrollTop=0;
